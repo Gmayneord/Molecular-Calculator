@@ -540,7 +540,7 @@ class EditWindow(QMainWindow):
 class BuildMainDialog(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.resize(385, 270)
+        self.setFixedSize(385, 270)
         self.setWindowTitle("Molecular Calculator")
         sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
