@@ -167,6 +167,7 @@ class MainWindow():
     def calculateButtonAction(self):
         errorReset(self.mainWindow.concentration_input)
         errorReset(self.mainWindow.volume_input)
+        reagent_selection_box = self.mainWindow.reagent_selection_dropdown
 
         concentration_textbox = self.mainWindow.concentration_input
         volume_textbox = self.mainWindow.volume_input
@@ -178,7 +179,8 @@ class MainWindow():
         if volume_textbox.text() == "":
             errorHighlight(volume_textbox)
 
-        reagent_selection_box = self.mainWindow.reagent_selection_dropdown
+        if reagent_selection_box.currentText() == add_new_item_text:
+            errorHighlight(reagent_selection_box)
 
         if concentration_textbox.text() != "" and volume_textbox.text() != "" and reagent_selection_box.currentText() != add_new_item_text:
             concentration = float(concentration_textbox.text())
