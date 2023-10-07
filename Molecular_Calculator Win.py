@@ -412,7 +412,7 @@ class AddWindow(QMainWindow):
             # Set the index on the dropdown box to be the new item...
             main.mainWindow.reagent_selection_dropdown.setCurrentIndex(main.mainWindow.reagent_selection_dropdown.findText(self.reagent_input.text()))
             # Process it so that the MW is displayed is correct
-            main.reagentSelectedACtion()
+            main.reagentSelectedcttion()
             # Close the dialog
             self.closeButtonAction()
         else:
