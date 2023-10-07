@@ -66,12 +66,12 @@ def updateDropdownBox(dropdown_box_object, list_to_populate, add_del_option=Fals
         dropdown_box_object.addItem(each_item)
 
 
-def errorHighlight(textboxt_to_change):
-    textboxt_to_change.setStyleSheet("background: red")
+def errorHighlight(field_to_change):
+    field_to_change.setStyleSheet("background: red")
 
 
-def errorReset(textboxt_to_change):
-    textboxt_to_change.setStyleSheet("background: None")
+def errorReset(field_to_change):
+    field_to_change.setStyleSheet("background: None")
 
 
 def createDirPath(path_for_creation):
@@ -401,6 +401,7 @@ class AddWindow(QMainWindow):
     def add_item_action(self):
         errorReset(self.reagent_input)
         errorReset(self.reagent_MW)
+        errorReset(main.mainWindow.reagent_selection_dropdown)
 
         if self.reagent_input != "" and self.reagent_MW != "":
             self.reset_main_dropbox = False
