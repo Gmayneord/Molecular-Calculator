@@ -507,7 +507,8 @@ class EditWindow(QMainWindow):
 
     def dropdownSelectedAction(self):
         self.reagent_input.setText(self.dropdown_menu.currentText())
-        self.reagent_MW.setText(str(main.stored_data["Reagents"][self.dropdown_menu.currentText()]))
+        if self.dropdown_menu.currentText() != "":
+            self.reagent_MW.setText(str(main.stored_data["Reagents"][self.dropdown_menu.currentText()]))
 
     def editItemAction(self):
         errorReset(self.reagent_input)
