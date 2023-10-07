@@ -91,7 +91,7 @@ def createDirPath(path_for_creation):
         mkdir(existing_path)
 
 
-def initial_run():
+def initialRun():
     # Run if no data file is detected. Will sort out making the file.
     # Make the file path in C drive first if it is the initial run.
     storage_dir = path.dirname(data_storage_file_loc)
@@ -117,16 +117,16 @@ class MainWindow():
     def __init__(self):
         self.mainWindow = BuildMainDialog()
         if path.isfile(data_storage_file_loc) is False:
-            self.stored_data = initial_run()
+            self.stored_data = initialRun()
             self.mainWindow.output_label.setText("First runtime detected... A new data storage file has been created!")
         else:
-            self.stored_data = self.read_from_storage(data_storage_file_loc)
+            self.stored_data = self.readFromStorage(data_storage_file_loc)
 
         self.dialog_busy = False
-        self.fill_dropdown_menus()
-        self.connect_buttons()
+        self.fillDropdownMenus()
+        self.connectButtons()
 
-    def fill_dropdown_menus(self):
+    def fillDropdownMenus(self):
         # Populate lists and set selected item to the default
         updateDropdownBox(self.mainWindow.concentration_scaler, list(concentration_scaler_dict), sort_list=False)
         self.mainWindow.concentration_scaler.setCurrentIndex(self.mainWindow.concentration_scaler.findText(concentration_scaler_default))
@@ -135,19 +135,19 @@ class MainWindow():
 
         updateDropdownBox(self.mainWindow.reagent_selection_dropdown, list(self.stored_data["Reagents"].keys()), add_del_option=True)
         if len(list(self.stored_data["Reagents"].keys())) != 0:
-            self.reagent_selected_action()
+            self.ReagentSelectedAction()
         # Also set up action for when dropdown menu item is selected
-        self.mainWindow.reagent_selection_dropdown.activated[str].connect(self.reagent_selected_action)
+        self.mainWindow.reagent_selection_dropdown.activated[str].connect(self.reagentSelectedAction)
 
-    def connect_buttons(self):
-        self.mainWindow.calculate_button.clicked.connect(self.calculate_button_action)
-        self.mainWindow.clear_calculation_button.clicked.connect(self.clear_calculation_action)
-        self.mainWindow.close_button.clicked.connect(self.close_button_action)
+    def connectButtons(self):
+        self.mainWindow.calculate_button.clicked.connect(self.calculateButtonAction)
+        self.mainWindow.clear_calculation_button.clicked.connect(self.clearCalculationAction)
+        self.mainWindow.close_button.clicked.connect(self.closeButtonAction)
 
     # ===================================
     # GUI actions:
     # ===================================
-    def reagent_selected_action(self):
+    def reagentSelectedAction(self):
         if self.dialog_busy is False:
             if self.mainWindow.reagent_selection_dropdown.currentText() == add_new_item_text:
                 self.add_item_window = AddWindow()
@@ -162,9 +162,9 @@ class MainWindow():
                 self.edit_window.show()
             else:
                 # Update the molecular weight label with the current selected item
-                self.update_MW_label(self.stored_data["Reagents"][self.mainWindow.reagent_selection_dropdown.currentText()])
+                self.updateMWLabel(self.stored_data["Reagents"][self.mainWindow.reagent_selection_dropdown.currentText()])
 
-    def calculate_button_action(self):
+    def calculateButtonAction(self):
         errorReset(self.mainWindow.concentration_input)
         errorReset(self.mainWindow.volume_input)
 
@@ -174,33 +174,37 @@ class MainWindow():
         # Check for blank fields
         if concentration_textbox.text() == "":
             errorHighlight(concentration_textbox)
+
         if volume_textbox.text() == "":
             errorHighlight(volume_textbox)
-        if concentration_textbox.text() != "" and volume_textbox.text() != "":
+
+        reagent_selection_box = self.mainWindow.reagent_selection_dropdown
+
+        if concentration_textbox.text() != "" and volume_textbox.text() != "" and reagent_selection_box.currentText() != add_new_item_text:
             concentration = float(concentration_textbox.text())
             concentration_scaler = concentration_scaler_dict[self.mainWindow.concentration_scaler.currentText()]
             volume = float(self.mainWindow.volume_input.text())
             volume_scaler = volume_scaler_dict[self.mainWindow.volume_scaler.currentText()]
-            molecular_weight = float(self.stored_data["Reagents"][self.mainWindow.reagent_selection_dropdown.currentText()])
-            self.conc_calculation_and_display(input_concentration=concentration * concentration_scaler,
-                                              input_volume=volume * volume_scaler,
-                                              inputMW=molecular_weight)
+            molecular_weight = float(self.stored_data["Reagents"][reagent_selection_box.currentText()])
+            self.concCalculationAndDisplay(input_concentration=concentration * concentration_scaler,
+                                           input_volume=volume * volume_scaler,
+                                           inputMW=molecular_weight)
 
-    def clear_calculation_action(self):
+    def clearCalculationAction(self):
         self.mainWindow.output_label.setText(" ")
         self.mainWindow.calculate_button.setDisabled(False)
         self.mainWindow.clear_calculation_button.setDisabled(True)
 
-    def update_MW_label(self, molecular_weight):
+    def updateMWLabel(self, molecular_weight):
         self.mainWindow.molecular_weight_label.setText("MW: " + str(molecular_weight))
 
-    def close_button_action(self):
+    def closeButtonAction(self):
         self.mainWindow.close()
 
     # ===================================
     # Operating functions:
     # ===================================
-    def conc_calculation_and_display(self, input_concentration, input_volume, inputMW):
+    def concCalculationAndDisplay(self, input_concentration, input_volume, inputMW):
         calculated_mass = input_concentration * input_volume * inputMW
         adjusted_calculated_mass = None
 
@@ -217,7 +221,7 @@ class MainWindow():
             self.mainWindow.calculate_button.setDisabled(True)
             self.mainWindow.clear_calculation_button.setDisabled(False)
 
-    def read_from_storage(self, file_to_read, specific_section=None):
+    def readFromStorage(self, file_to_read, specific_section=None):
         with open(file_to_read, "r") as file_obj:
             stored_data = load(file_obj)
         file_obj.close()
@@ -227,7 +231,7 @@ class MainWindow():
         else:
             return stored_data[specific_section]
 
-    def write_to_storage(self, section_to_update, selected_element, del_item=False, dropbox_to_update=None, update_MW_label=True):
+    def writeToStorage(self, section_to_update, selected_element, del_item=False, dropbox_to_update=None, update_MW_label=True):
         if del_item:
             del self.stored_data[section_to_update][selected_element]
         else:
@@ -242,9 +246,9 @@ class MainWindow():
 
         if update_MW_label:
             if del_item:
-                self.update_MW_label(self.stored_data["Reagents"][self.mainWindow.reagent_selection_dropdown.currentText()])
+                self.updateMWLabel(self.stored_data["Reagents"][self.mainWindow.reagent_selection_dropdown.currentText()])
             else:
-                self.update_MW_label(selected_element["data"])
+                self.updateMWLabel(selected_element["data"])
 
 
 # =====================================================================
@@ -254,11 +258,11 @@ class DeleteWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         main.dialog_busy = True
-        self.create_GUI()
-        self.connect_buttons()
+        self.createGUI()
+        self.connectButtons()
         self.reset_main_dropbox = True
 
-    def create_GUI(self):
+    def createGUI(self):
         self.setWindowTitle("Delete items")
         self.resize(300, 100)
         v_layout = QVBoxLayout()
@@ -293,30 +297,30 @@ class DeleteWindow(QMainWindow):
         self.setCentralWidget(widget)
         widget.setContentsMargins(10, 10, 10, 10)
 
-    def connect_buttons(self):
-        self.close_button.clicked.connect(self.close_button_action)
-        self.delete_button.clicked.connect(self.delete_button_action)
+    def connectButtons(self):
+        self.close_button.clicked.connect(self.closeButtonAction)
+        self.delete_button.clicked.connect(self.deleteButtonAction)
 
     # ===================================
     # GUI actions:
     # ===================================
-    def close_button_action(self):
+    def closeButtonAction(self):
         if self.reset_main_dropbox is True:
             main.mainWindow.reagent_selection_dropdown.setCurrentIndex(0)
         main.dialog_busy = False
         self.close()
 
-    def delete_button_action(self):
+    def deleteButtonAction(self):
         errorReset(self.dropdown_menu)
         if self.dropdown_menu.currentText() != "":
             self.reset_main_dropbox = False
             # Turn off button to avoid accidental multiple activations
             self.delete_button.setEnabled(False)
             # Remove it and write the change to the file
-            main.write_to_storage("Reagents", self.dropdown_menu.currentText(), del_item=True, dropbox_to_update=main.mainWindow.reagent_selection_dropdown)
+            main.writeToStorage("Reagents", self.dropdown_menu.currentText(), del_item=True, dropbox_to_update=main.mainWindow.reagent_selection_dropdown)
             # Also update the dropdown box in the main window
             updateDropdownBox(self.dropdown_menu, list(main.stored_data["Reagents"]), add_del_option=False)
-            main.reagent_selected_action()
+            main.reagentSelectedAction()
             QTimer.singleShot(1000, lambda: self.delete_button.setEnabled(True))
         else:
             errorHighlight(self.dropdown_menu)
@@ -329,11 +333,11 @@ class AddWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         main.dialog_busy = True
-        self.create_GUI()
-        self.connect_buttons()
+        self.createGUI()
+        self.connectButtons()
         self.reset_main_dropbox = True
 
-    def create_GUI(self):
+    def createGUI(self):
         self.setWindowTitle("Add items")
         self.resize(300, 100)
         v_layout = QVBoxLayout()
@@ -379,14 +383,14 @@ class AddWindow(QMainWindow):
         self.setCentralWidget(widget)
         widget.setContentsMargins(10, 10, 10, 10)
 
-    def connect_buttons(self):
+    def connectButtons(self):
         self.add_item_button.clicked.connect(self.add_item_action)
-        self.close_button.clicked.connect(self.close_button_action)
+        self.close_button.clicked.connect(self.closeButtonAction)
 
     # ===================================
     # GUI actions:
     # ===================================
-    def close_button_action(self):
+    def closeButtonAction(self):
         if self.reset_main_dropbox is True:
             main.mainWindow.reagent_selection_dropdown.setCurrentIndex(0)
         main.dialog_busy = False
@@ -399,15 +403,15 @@ class AddWindow(QMainWindow):
         if self.reagent_input != "" and self.reagent_MW != "":
             self.reset_main_dropbox = False
             # Remove it and write the change to the file
-            main.write_to_storage("Reagents", {"name": self.reagent_input.text(),
-                                               "data": float(self.reagent_MW.text())},
-                                  dropbox_to_update=main.mainWindow.reagent_selection_dropdown)
+            main.writeToStorage("Reagents", {"name": self.reagent_input.text(),
+                                             "data": float(self.reagent_MW.text())},
+                                dropbox_to_update=main.mainWindow.reagent_selection_dropdown)
             # Set the index on the dropdown box to be the new item...
             main.mainWindow.reagent_selection_dropdown.setCurrentIndex(main.mainWindow.reagent_selection_dropdown.findText(self.reagent_input.text()))
             # Process it so that the MW is displayed is correct
-            main.reagent_selected_action()
+            main.reagentSelectedACtion()
             # Close the dialog
-            self.close_button_action()
+            self.closeButtonAction()
         else:
             if self.reagent_input == "":
                 errorHighlight(self.reagent_input)
@@ -423,7 +427,7 @@ class EditWindow(QMainWindow):
         super().__init__()
         main.dialog_busy = True
         self.create_GUI()
-        self.connect_buttons()
+        self.connectButtons()
         self.reset_main_dropbox = True
 
     def create_GUI(self):
@@ -482,44 +486,45 @@ class EditWindow(QMainWindow):
         self.setCentralWidget(widget)
         widget.setContentsMargins(10, 10, 10, 10)
 
-    def connect_buttons(self):
-        self.add_item_button.clicked.connect(self.edit_item_action)
-        self.close_button.clicked.connect(self.close_button_action)
-        self.dropdown_menu.activated[str].connect(self.dropdown_selected_action)
-        self.dropdown_selected_action()
+    def connectButtons(self):
+        self.add_item_button.clicked.connect(self.editItemAction)
+        self.close_button.clicked.connect(self.closeButtonAction)
+        self.dropdown_menu.activated[str].connect(self.dropdownSelectedAction)
+        self.dropdownSelectedAction()
 
     # ===================================
     # GUI actions:
     # ===================================
-    def close_button_action(self):
+    def closeButtonAction(self):
         if self.reset_main_dropbox is True:
             main.mainWindow.reagent_selection_dropdown.setCurrentIndex(0)
         main.dialog_busy = False
         self.close()
 
-    def dropdown_selected_action(self):
+    def dropdownSelectedAction(self):
         self.reagent_input.setText(self.dropdown_menu.currentText())
         self.reagent_MW.setText(str(main.stored_data["Reagents"][self.dropdown_menu.currentText()]))
 
-    def edit_item_action(self):
+    def editItemAction(self):
         errorReset(self.reagent_input)
         errorReset(self.reagent_MW)
 
         if self.reagent_input != "" and self.reagent_MW != "":
             self.reset_main_dropbox = False
             # Delete the old item.
-            main.write_to_storage("Reagents", self.dropdown_menu.currentText(), del_item=True, update_MW_label=False)
+            main.writeToStorage("Reagents", self.dropdown_menu.currentText(), del_item=True, update_MW_label=False)
 
             # Write the nw item and write change to the file
-            main.write_to_storage("Reagents", {"name": self.reagent_input.text(),
-                                               "data": float(self.reagent_MW.text())},
-                                  dropbox_to_update=main.mainWindow.reagent_selection_dropdown)
+            main.writeToStorage("Reagents", {"name": self.reagent_input.text(),
+                                             "data": float(self.reagent_MW.text())},
+                                dropbox_to_update=main.mainWindow.reagent_selection_dropdown)
+
             # Set the index on the dropdown box to be the new item...
             main.mainWindow.reagent_selection_dropdown.setCurrentIndex(main.mainWindow.reagent_selection_dropdown.findText(self.reagent_input.text()))
             # Process it so that the MW is displayed is correct
-            main.reagent_selected_action()
+            main.reagentSelectedAction()
             # Close the dialog
-            self.close_button_action()
+            self.closeButtonAction()
         else:
             if self.reagent_input == "":
                 errorHighlight(self.reagent_input)
@@ -537,9 +542,9 @@ class BuildMainDialog(QMainWindow):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(sizePolicy.hasHeightForWidth())
         self.setSizePolicy(sizePolicy)
-        self.create_GUI()
+        self.createGUI()
 
-    def create_GUI(self):
+    def createGUI(self):
         verticalLayoutWidget = QWidget(self)
         verticalLayoutWidget.setGeometry(QRect(10, 10, 371, 250))
         verticalLayout = QVBoxLayout(verticalLayoutWidget)
