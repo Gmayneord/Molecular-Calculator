@@ -135,7 +135,7 @@ class MainWindow():
 
         updateDropdownBox(self.mainWindow.reagent_selection_dropdown, list(self.stored_data["Reagents"].keys()), add_del_option=True)
         if len(list(self.stored_data["Reagents"].keys())) != 0:
-            self.ReagentSelectedAction()
+            self.reagentSelectedAction()
         # Also set up action for when dropdown menu item is selected
         self.mainWindow.reagent_selection_dropdown.activated[str].connect(self.reagentSelectedAction)
 
@@ -412,7 +412,7 @@ class AddWindow(QMainWindow):
             # Set the index on the dropdown box to be the new item...
             main.mainWindow.reagent_selection_dropdown.setCurrentIndex(main.mainWindow.reagent_selection_dropdown.findText(self.reagent_input.text()))
             # Process it so that the MW is displayed is correct
-            main.reagentSelectedcttion()
+            main.reagentSelectedction()
             # Close the dialog
             self.closeButtonAction()
         else:
