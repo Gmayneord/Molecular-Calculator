@@ -551,7 +551,7 @@ class BuildMainDialog(QMainWindow):
 
     def createGUI(self):
         verticalLayoutWidget = QWidget(self)
-        verticalLayoutWidget.setGeometry(QRect(10, 10, 500, 350))
+        verticalLayoutWidget.setGeometry(QRect(10, 10, 371, 250))
         verticalLayout = QVBoxLayout(verticalLayoutWidget)
         verticalLayout.setContentsMargins(10, 10, 10, 10)
 
