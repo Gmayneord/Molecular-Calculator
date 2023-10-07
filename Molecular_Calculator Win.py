@@ -248,7 +248,8 @@ class MainWindow():
 
         if update_MW_label:
             if del_item:
-                self.updateMWLabel(self.stored_data["Reagents"][self.mainWindow.reagent_selection_dropdown.currentText()])
+                if self.mainWindow.reagent_selection_dropdown.currentText() != add_new_item_text:
+                    self.updateMWLabel(self.stored_data["Reagents"][self.mainWindow.reagent_selection_dropdown.currentText()])
             else:
                 self.updateMWLabel(selected_element["data"])
 
