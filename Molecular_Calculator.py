@@ -430,7 +430,7 @@ class MainWindow():
 class DeleteWindow(QtWidgets.QMainWindow):
     def __init__(self, dropdown_obj):
         super().__init__()
-        main.dialog_busy = True
+        Main.dialog_busy = True
         self.createGUI()
         self.connectButtons()
         self.reset_main_dropbox = True
@@ -447,7 +447,7 @@ class DeleteWindow(QtWidgets.QMainWindow):
         self.dropdown_menu.setMinimumSize(QtCore.QSize(150, 20))
         self.dropdown_menu.setMaximumSize(QtCore.QSize(150, 20))
         # Populate the list with items stored from the main data storage
-        populateDropdownBox(self.dropdown_menu, list(main.stored_data["Reagents"]))
+        populateDropdownBox(self.dropdown_menu, list(Main.stored_data["Reagents"]))
 
         h_layout.addWidget(self.dropdown_menu)
         self.delete_button = QtWidgets.QPushButton("Delete...")
@@ -481,7 +481,7 @@ class DeleteWindow(QtWidgets.QMainWindow):
     def closeButtonAction(self):
         if self.reset_main_dropbox is True:
             self.dropdown_obj.setCurrentIndex(0)
-        main.dialog_busy = False
+        Main.dialog_busy = False
         self.close()
 
     def deleteButtonAction(self):
@@ -491,10 +491,10 @@ class DeleteWindow(QtWidgets.QMainWindow):
             # Turn off button to avoid accidental multiple activations
             self.delete_button.setEnabled(False)
             # Remove it and write the change to the file
-            main.writeToStorage("Reagents", self.dropdown_menu.currentText(), del_item=True)
+            Main.writeToStorage("Reagents", self.dropdown_menu.currentText(), del_item=True)
 
             # Also update the dropdown box in the delete window GUI.
-            populateDropdownBox(self.dropdown_menu, list(main.stored_data["Reagents"]), additional_opt=False)
+            populateDropdownBox(self.dropdown_menu, list(Main.stored_data["Reagents"]), additional_opt=False)
 
             # Wait a moment to avoid multiple clicks
             QtCore.QTimer.singleShot(1000, lambda: self.delete_button.setEnabled(True))
@@ -505,7 +505,7 @@ class DeleteWindow(QtWidgets.QMainWindow):
 class AddWindow(QtWidgets.QMainWindow):
     def __init__(self, dropdown_obj):
         super().__init__()
-        main.dialog_busy = True
+        Main.dialog_busy = True
         self.createGUI()
         self.connectButtons()
         self.reset_main_dropbox = True
@@ -568,7 +568,7 @@ class AddWindow(QtWidgets.QMainWindow):
     def closeButtonAction(self):
         if self.reset_main_dropbox is True:
             self.dropdown_obj.setCurrentIndex(0)
-        main.dialog_busy = False
+        Main.dialog_busy = False
         self.close()
 
     def add_item_action(self):
@@ -579,7 +579,7 @@ class AddWindow(QtWidgets.QMainWindow):
         if self.reagent_input != "" and self.reagent_MW != "":
             self.reset_main_dropbox = False
             # Remove it and write the change to the file
-            main.writeToStorage("Reagents",
+            Main.writeToStorage("Reagents",
                                 {"name": self.reagent_input.text(),
                                  "data": float(self.reagent_MW.text())})
 
@@ -597,7 +597,7 @@ class AddWindow(QtWidgets.QMainWindow):
 class EditWindow(QtWidgets.QMainWindow):
     def __init__(self, dropdown_obj):
         super().__init__()
-        main.dialog_busy = True
+        Main.dialog_busy = True
         self.create_GUI()
         self.connectButtons()
         self.reset_main_dropbox = True
@@ -614,7 +614,7 @@ class EditWindow(QtWidgets.QMainWindow):
         self.dropdown_menu = QtWidgets.QComboBox()
         h_layout.addWidget(self.dropdown_menu)
         # Populate the list with items stored from the main data storage
-        populateDropdownBox(self.dropdown_menu, list(main.stored_data["Reagents"]))
+        populateDropdownBox(self.dropdown_menu, list(Main.stored_data["Reagents"]))
         v_layout.addLayout(h_layout)
 
         h_layout = QtWidgets.QHBoxLayout()
@@ -670,14 +670,14 @@ class EditWindow(QtWidgets.QMainWindow):
     # ===================================
     def closeButtonAction(self):
         if self.reset_main_dropbox is True:
-            main.mainWindow.reagent_selection_dropdown.setCurrentIndex(0)
-        main.dialog_busy = False
+            Main.mainWindow.reagent_selection_dropdown.setCurrentIndex(0)
+        Main.dialog_busy = False
         self.close()
 
     def dropdownSelectedAction(self):
         self.reagent_input.setText(self.dropdown_menu.currentText())
         if self.dropdown_menu.currentText() != "":
-            self.reagent_MW.setText(str(main.stored_data["Reagents"][self.dropdown_menu.currentText()]))
+            self.reagent_MW.setText(str(Main.stored_data["Reagents"][self.dropdown_menu.currentText()]))
 
     def editItemAction(self):
         errorReset(self.reagent_input)
@@ -690,7 +690,7 @@ class EditWindow(QtWidgets.QMainWindow):
             # main.writeToStorage("Reagents", self.dropdown_menu.currentText(), del_item=True)
 
             # Write the nw item and write change to the file
-            main.writeToStorage("Reagents", {"name": self.reagent_input.text(),
+            Main.writeToStorage("Reagents", {"name": self.reagent_input.text(),
                                              "data": float(self.reagent_MW.text())})
             # Close the dialog
             self.closeButtonAction()
@@ -1067,9 +1067,9 @@ class GenerateMainGUI(QtWidgets.QWidget):
         self.close_button.setText(_translate("Form", "Close"))
 
 
-app = QtWidgets.QApplication.instance()
-if app is None:
-    app = QtWidgets.QApplication(sys.argv)
-main = MainWindow()
-main.Gui.show()
-sys.exit(app.exec_())
+App = QtWidgets.QApplication.instance()
+if App is None:
+    App = QtWidgets.QApplication(sys.argv)
+Main = MainWindow()
+Main.Gui.show()
+sys.exit(App.exec_())
