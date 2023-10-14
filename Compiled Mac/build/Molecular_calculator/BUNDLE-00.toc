@@ -1,0 +1,3 @@
+([('Molecular_calculator',
+   '/Users/guymayneord/Documents/GitHub/Molecular-Calculator/dist/Molecular_calculator',
+   'EXECUTABLE')],)
