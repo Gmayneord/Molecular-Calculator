@@ -3,11 +3,10 @@ Created on Tue Dec 13 08:38:33 2022
 
 @author: g.mayneord
 """
-
-from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 from os import path, mkdir
 from json import dump, load
+from PyQt5 import QtCore, QtGui, QtWidgets
 
 # =====================================================================
 # Parameters:
