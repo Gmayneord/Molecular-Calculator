@@ -1034,6 +1034,10 @@ class GenerateMainGUI(QtWidgets.QWidget):
         self.close_button.setMinimumSize(QtCore.QSize(113, 32))
         self.close_button.setMaximumSize(QtCore.QSize(113, 32))
         self.close_button.setObjectName("close_button")
+        self.setStyleSheet('''
+                           QTabWidget::tab-bar {
+                               alignment: center;
+                           }''')
 
         self.retranslateUi()
         self.tab_object.setCurrentIndex(0)
