@@ -1,3 +1,8 @@
 
 .DS_Store
 Stored_data.json
+.idea/vcs.xml
+.idea/Molecular-Calculator.iml
+.idea/modules.xml
+.idea/misc.xml
+.idea/inspectionProfiles/profiles_settings.xml
