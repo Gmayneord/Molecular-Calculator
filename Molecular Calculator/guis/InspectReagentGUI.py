@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtGui, QtCore
-from gui_functions.common_functions import create_line
+from gui_functions.CommonFunctions import create_line
 
 class InspectReagentGUI(QtWidgets.QMainWindow):
     def __init__(self):

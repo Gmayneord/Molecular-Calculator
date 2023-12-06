@@ -1,14 +1,14 @@
 from PyQt5 import QtCore
 from guis.DeleteReagentGUI import DeleteReagentGUI
-from gui_functions.common_functions import populate_dropdown_box, error_reset, error_highlight
+from gui_functions.CommonFunctions import populate_dropdown_box, error_reset, error_highlight
 
 
 class DeleteWindow:
-    def __init__(self, Main_Window):
+    def __init__(self, main_window):
         self.GUI = DeleteReagentGUI()
         self.reset_main_dropbox = True
-        self.Main_Window = Main_Window
-        self.Database = Main_Window.Database
+        self.Main_Window = main_window
+        self.Database = main_window.Database
         self.Main_Window.dialog_busy = True
         self.connect_buttons()
 

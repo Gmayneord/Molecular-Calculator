@@ -3,7 +3,7 @@ from PyQt5 import QtWidgets
 from data.constants import ADD_NEW_ITEM_TEXT, DELETE_ITEM_TEXT, EDIT_ITEM_TEXT
 
 
-def create_line(orientation: str="h") -> QtWidgets.QFrame:
+def create_line(orientation: str = "h") -> QtWidgets.QFrame:
     """
     Function to create a vertical or horizontal line for the interface.
     :param orientation: String, either "h" for horizontal or "v" for vertical.
@@ -17,10 +17,11 @@ def create_line(orientation: str="h") -> QtWidgets.QFrame:
     line.setFrameShadow(QtWidgets.QFrame.Sunken)
     return line
 
+
 def populate_dropdown_box(dropdown_box_object: QtWidgets.QComboBox,
                           list_to_populate: list,
-                          additional_opt: bool=False,
-                          sort_list: bool=True,
+                          additional_opt: bool = False,
+                          sort_list: bool = True,
                           default_value: str = "") -> None:
     """
     Function to populate a dropdown box with a list of items.
@@ -54,7 +55,7 @@ def populate_dropdown_box(dropdown_box_object: QtWidgets.QComboBox,
 def error_highlight(object_to_highlight) -> None:
     """
     Function to highlight an error in a QtWidget object
-    :param object_highlight: Can be any of the QtWidget types, e.g. QComboBox, QlineEdit etc.
+    :param object_to_highlight: Can be any of the QtWidget types, e.g. QComboBox, QlineEdit etc.
     :return: None
     """
     object_to_highlight.setStyleSheet("background: red")

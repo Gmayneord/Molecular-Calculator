@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from data.constants import DATA_STORAGE_FILE_LOC, REAGENT_VERSION_NO
 from json import dump, load
 
+
 @dataclass
 class Reagent:
     """
@@ -76,7 +77,7 @@ class ReagentDatabase:
         :param reagent_name: string containing the name of the reagent.
         :return: Reagent dataclass object for the reagent.
         """
-        output_reagent = [x for x in self.reagent_database if x.name==reagent_name][0]
+        output_reagent = [x for x in self.reagent_database if x.name == reagent_name][0]
         return output_reagent
 
     def add_reagent(self,
@@ -88,13 +89,12 @@ class ReagentDatabase:
         """
         Function for adding an item to the reagent database. This involves a check of the names
         currently in the database to ensure there is no overlap.
-        :param reagent_obj: Reagent dataclass object for the reagent.
         :return: bool, showing whether the item has been added to the database or not.
         """
         # Convert it to lowercase for easier comparison. Differentiating between upper and lowercase for items will just lead to confusion
         new_reagent_name = name.lower()
-        overlap_list = [x for x in self.reagent_database if x.name.lower()==new_reagent_name]
-        if len(overlap_list)>0:
+        overlap_list = [x for x in self.reagent_database if x.name.lower() == new_reagent_name]
+        if len(overlap_list) > 0:
             return False
         else:
             new_item = Reagent(name, molecular_weight, product_code, supplier, h_codes)
@@ -105,11 +105,10 @@ class ReagentDatabase:
     def delete_reagent(self, reagent_name: str) -> bool:
         """
         Function for deleting an item from the reagent database.
-        :param reagent_obj: String with the name of the item to be deleted
         :return: bool, showing whether the item has been deleted from the database or not.
         """
         deletion_item_name = reagent_name.lower()
-        deletion_index = [index for (index, item) in enumerate(self.reagent_database) if item.name.lower()==deletion_item_name][0]
+        deletion_index = [index for (index, item) in enumerate(self.reagent_database) if item.name.lower() == deletion_item_name][0]
         del self.reagent_database[deletion_index]
         self.save_database()
         return True
@@ -124,12 +123,10 @@ class ReagentDatabase:
         """
         Function for editing an existing reagent item in the database. It will be passed the new Reagent object,
         and an old reagent object, and will replace the old one with the new one in the database.
-        :param new_reagent_obj: The new Reagent object to replace the old one in the database
-        :param old_reagent_obj: The old Reagent object to be replaced.
         :return: bool, indicating whether changes were successful or not.
         """
         old_reagent_name = old_reagent_name.lower()
-        replacement_index = [index for (index, item) in enumerate(self.reagent_database) if item.name.lower()==old_reagent_name][0]
+        replacement_index = [index for (index, item) in enumerate(self.reagent_database) if item.name.lower() == old_reagent_name][0]
         new_reagent_obj = Reagent(name,
                                   molecular_weight,
                                   product_code,

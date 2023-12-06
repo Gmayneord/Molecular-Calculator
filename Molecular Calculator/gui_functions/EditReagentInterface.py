@@ -1,12 +1,13 @@
 from guis.EditReagentGUI import EditReagentGUI
-from gui_functions.common_functions import populate_dropdown_box, batch_error_reset, error_highlight
+from gui_functions.CommonFunctions import populate_dropdown_box, batch_error_reset, error_highlight
 
-class EditWindow():
-    def __init__(self, Main_Window):
+
+class EditWindow:
+    def __init__(self, main_window):
         super().__init__()
         self.GUI = EditReagentGUI()
-        self.Database = Main_Window.Database
-        self.Main_Window = Main_Window
+        self.Database = main_window.Database
+        self.Main_Window = main_window
         self.reset_main_dropbox = True
         self.Main_Window.dialog_busy = True
         self.connect_buttons()
@@ -35,7 +36,11 @@ class EditWindow():
             self.GUI.h_code_input.setText(str(selected_item.h_codes))
 
     def edit_item_action(self):
-        batch_error_reset([self.GUI.reagent_input, self.GUI.mw_input, self.GUI.supplier_input, self.GUI.h_code_input, self.GUI.product_code_input])
+        batch_error_reset([self.GUI.reagent_input,
+                           self.GUI.mw_input,
+                           self.GUI.supplier_input,
+                           self.GUI.h_code_input,
+                           self.GUI.product_code_input])
         if self.GUI.reagent_input.text() != "" and self.GUI.mw_input.text() != "":
             # Grab the item that was selected (original item)
             original_reagent_text = self.GUI.dropdown_menu.currentText()

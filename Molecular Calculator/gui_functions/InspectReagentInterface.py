@@ -1,9 +1,10 @@
 from guis.InspectReagentGUI import InspectReagentGUI
 from data.datatypes import Reagent
 
-class InspectionWindow():
-    def __init__(self, Reagent_obj: Reagent):
-        self.Reagent_obj = Reagent_obj
+
+class InspectionWindow:
+    def __init__(self, reagent_obj: Reagent):
+        self.Reagent_obj = reagent_obj
         self.GUI = InspectReagentGUI()
         self.connect_buttons()
 

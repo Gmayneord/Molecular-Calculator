@@ -11,9 +11,10 @@ from gui_functions.AddReagentInterface import AddWindow
 from gui_functions.DeleteReagentInterface import DeleteWindow
 from gui_functions.EditReagentInterface import EditWindow
 from gui_functions.InspectReagentInterface import InspectionWindow
-from gui_functions.common_functions import populate_dropdown_box, update_mw_label, error_reset, error_highlight
+from gui_functions.CommonFunctions import populate_dropdown_box, update_mw_label, error_reset, error_highlight
 
-class MainWindow():
+
+class MainWindow:
     def __init__(self):
         # Initially set this as busy for the creation of the dialog
         self.dialog_busy = True
@@ -35,32 +36,37 @@ class MainWindow():
         self.dialog_busy = False
 
     def connect_actions(self):
-        GUI = self.GUI
-        def connect_mass_tab(self, GUI):
-            GUI.m_calc_button.clicked.connect(self.m_calculate_button_action)
-            GUI.m_clear_calc_button.clicked.connect(
-                lambda: self.clear_calculation_action(GUI.m_output, GUI.m_calc_button, GUI.m_clear_calc_button))
+        def connect_mass_tab():
+            self.GUI.m_calc_button.clicked.connect(self.m_calculate_button_action)
+            self.GUI.m_clear_calc_button.clicked.connect(
+                lambda: self.clear_calculation_action(self.GUI.m_output,
+                                                      self.GUI.m_calc_button,
+                                                      self.GUI.m_clear_calc_button))
 
-        def connect_vol_tab(self, GUI):
-            GUI.v_calc_button.clicked.connect(self.v_calculate_button_action)
-            GUI.v_clear_calc_button.clicked.connect(
-                lambda: self.clear_calculation_action(GUI.v_output, GUI.v_calc_button, GUI.v_clear_calc_button))
+        def connect_vol_tab():
+            self.GUI.v_calc_button.clicked.connect(self.v_calculate_button_action)
+            self.GUI.v_clear_calc_button.clicked.connect(
+                lambda: self.clear_calculation_action(self.GUI.v_output,
+                                                      self.GUI.v_calc_button,
+                                                      self.GUI.v_clear_calc_button))
 
-        def connect_conc_tab(self, GUI):
-            GUI.c_calc_button.clicked.connect(self.c_calculate_button_action)
-            GUI.c_clear_calc_button.clicked.connect(
-                lambda: self.clear_calculation_action(GUI.c_output, GUI.c_calc_button, GUI.c_clear_calc_button))
+        def connect_conc_tab():
+            self.GUI.c_calc_button.clicked.connect(self.c_calculate_button_action)
+            self.GUI.c_clear_calc_button.clicked.connect(
+                lambda: self.clear_calculation_action(self.GUI.c_output,
+                                                      self.GUI.c_calc_button,
+                                                      self.GUI.c_clear_calc_button))
 
-        def connect_inspection_tab(self, GUI):
-            GUI.inspect_reagent_button.clicked.connect(self.inspect_reagent_button_action)
+        def connect_inspection_tab():
+            self.GUI.inspect_reagent_button.clicked.connect(self.inspect_reagent_button_action)
 
-        connect_mass_tab(self, GUI)
-        connect_vol_tab(self, GUI)
-        connect_conc_tab(self, GUI)
-        connect_inspection_tab(self, GUI)
+        connect_mass_tab()
+        connect_vol_tab()
+        connect_conc_tab()
+        connect_inspection_tab()
         self.populate_scaler_dropdowns()
         self.populate_reagent_dropdowns(connect_mw_responses=True)
-        GUI.close_button.clicked.connect(self.close_button_action)
+        self.GUI.close_button.clicked.connect(self.close_button_action)
 
     def populate_scaler_dropdowns(self):
         # ======================================================================
@@ -103,7 +109,7 @@ class MainWindow():
                               )
         # ======================================================================
 
-    def populate_reagent_dropdowns(self, default_value: str="", connect_mw_responses=False):
+    def populate_reagent_dropdowns(self, default_value: str = "", connect_mw_responses=False):
         reagent_list = self.Database.create_database_list()
         # ======================================================================
         # Populate dropdowns for mass tab
@@ -115,7 +121,8 @@ class MainWindow():
 
         self.reagent_selected_action(self.GUI.m_reagent_dropdown, self.GUI.m_mw_label)
         if connect_mw_responses:
-            self.GUI.m_reagent_dropdown.activated[str].connect(lambda: self.reagent_selected_action(self.GUI.m_reagent_dropdown, self.GUI.m_mw_label))
+            self.GUI.m_reagent_dropdown.activated[str].connect(lambda: self.reagent_selected_action(self.GUI.m_reagent_dropdown,
+                                                                                                    self.GUI.m_mw_label))
 
         # ======================================================================
         # Populate dropdowns for volume tab
@@ -127,7 +134,8 @@ class MainWindow():
 
         self.reagent_selected_action(self.GUI.v_reagent_dropdown, self.GUI.v_mw_label)
         if connect_mw_responses:
-            self.GUI.v_reagent_dropdown.activated[str].connect(lambda: self.reagent_selected_action(self.GUI.v_reagent_dropdown, self.GUI.v_mw_label))
+            self.GUI.v_reagent_dropdown.activated[str].connect(lambda: self.reagent_selected_action(self.GUI.v_reagent_dropdown,
+                                                                                                    self.GUI.v_mw_label))
 
         # ======================================================================
         # Populate dropdowns for concentration tab
@@ -139,7 +147,8 @@ class MainWindow():
 
         self.reagent_selected_action(self.GUI.c_reagent_dropdown, self.GUI.c_mw_label)
         if connect_mw_responses:
-            self.GUI.c_reagent_dropdown.activated[str].connect(lambda: self.reagent_selected_action(self.GUI.c_reagent_dropdown, self.GUI.c_mw_label))
+            self.GUI.c_reagent_dropdown.activated[str].connect(lambda: self.reagent_selected_action(self.GUI.c_reagent_dropdown,
+                                                                                                    self.GUI.c_mw_label))
 
         # ======================================================================
         # Populate dropdowns for inspection tab
@@ -151,7 +160,8 @@ class MainWindow():
 
         self.reagent_selected_action(self.GUI.i_reagent_dropdown, self.GUI.i_mw_label)
         if connect_mw_responses:
-            self.GUI.i_reagent_dropdown.activated[str].connect(lambda: self.reagent_selected_action(self.GUI.i_reagent_dropdown, self.GUI.i_mw_label))
+            self.GUI.i_reagent_dropdown.activated[str].connect(lambda: self.reagent_selected_action(self.GUI.i_reagent_dropdown,
+                                                                                                    self.GUI.i_mw_label))
         # ======================================================================
 
     def reagent_selected_action(self, dropdown_obj, mw_label_obj):
@@ -185,22 +195,20 @@ class MainWindow():
                 update_mw_label(mw_label_obj,
                                 " --")
 
-
     def clear_calculation_action(self, text_to_reset, calc_button, clear_button):
         text_to_reset.setText(" ")
         calc_button.setDisabled(False)
         clear_button.setDisabled(True)
 
     def m_calculate_button_action(self):
-        GUI = self.GUI
-        error_reset(GUI.m_conc_textbox)
-        error_reset(GUI.m_vol_textbox)
-        reagent_selection_box = GUI.m_reagent_dropdown
+        error_reset(self.GUI.m_conc_textbox)
+        error_reset(self.GUI.m_vol_textbox)
+        reagent_selection_box = self.GUI.m_reagent_dropdown
 
-        conc_textbox = GUI.m_conc_textbox
-        conc_scaler = GUI.m_conc_dropdown
-        vol_textbox = GUI.m_vol_textbox
-        vol_scaler = GUI.m_vol_dropdown
+        conc_textbox = self.GUI.m_conc_textbox
+        conc_scaler = self.GUI.m_conc_dropdown
+        vol_textbox = self.GUI.m_vol_textbox
+        vol_scaler = self.GUI.m_vol_dropdown
 
         # Check for blank fields
         if conc_textbox.text() == "":
@@ -218,21 +226,20 @@ class MainWindow():
             selected_reagent = self.Database.return_reagent(reagent_selection_box.currentText())
             self.mass_calc_and_display(input_conc=concentration,
                                        input_vol=volume,
-                                       inputMW=selected_reagent.molecular_weight,
+                                       input_mw=selected_reagent.molecular_weight,
                                        vol_scaler=vol_scaler.currentText(),
                                        conc_scaler=conc_scaler.currentText(),
                                        reagent_name=reagent_selection_box.currentText())
 
     def v_calculate_button_action(self):
-        GUI = self.GUI
-        error_reset(GUI.v_conc_textbox)
-        error_reset(GUI.v_mass_textbox)
-        reagent_selection_box = GUI.v_reagent_dropdown
+        error_reset(self.GUI.v_conc_textbox)
+        error_reset(self.GUI.v_mass_textbox)
+        reagent_selection_box = self.GUI.v_reagent_dropdown
 
-        conc_textbox = GUI.v_conc_textbox
-        conc_scaler = GUI.v_conc_dropdown
-        mass_textbox = GUI.v_mass_textbox
-        mass_scaler = GUI.v_mass_dropdown
+        conc_textbox = self.GUI.v_conc_textbox
+        conc_scaler = self.GUI.v_conc_dropdown
+        mass_textbox = self.GUI.v_mass_textbox
+        mass_scaler = self.GUI.v_mass_dropdown
 
         # Check for blank fields
         if conc_textbox.text() == "":
@@ -253,20 +260,19 @@ class MainWindow():
                                       conc_scaler=conc_scaler.currentText(),
                                       input_mass=mass,
                                       mass_scaler=mass_scaler.currentText(),
-                                      inputMW=selected_reagent.molecular_weight,
+                                      input_mw=selected_reagent.molecular_weight,
                                       reagent_name=reagent_selection_box.currentText())
 
     def c_calculate_button_action(self):
-        GUI = self.GUI
-        mass_textbox = GUI.c_mass_textbox
-        vol_textbox = GUI.c_vol_textbox
+        mass_textbox = self.GUI.c_mass_textbox
+        vol_textbox = self.GUI.c_vol_textbox
 
         error_reset(vol_textbox)
         error_reset(mass_textbox)
-        reagent_selection_box = GUI.c_reagent_dropdown
+        reagent_selection_box = self.GUI.c_reagent_dropdown
 
-        vol_scaler = GUI.c_vol_dropdown
-        mass_scaler = GUI.c_mass_dropdown
+        vol_scaler = self.GUI.c_vol_dropdown
+        mass_scaler = self.GUI.c_mass_dropdown
 
         # Check for blank fields
         if vol_textbox.text() == "":
@@ -287,7 +293,7 @@ class MainWindow():
                                        mass_scaler=mass_scaler.currentText(),
                                        input_vol=vol,
                                        vol_scaler=vol_scaler.currentText(),
-                                       inputMW=selected_reagent.molecular_weight,
+                                       input_mw=selected_reagent.molecular_weight,
                                        reagent_name=reagent_selection_box.currentText())
 
     def inspect_reagent_button_action(self):
@@ -308,14 +314,14 @@ class MainWindow():
             # Stop the button being active if the dialog is busy.
             self.GUI.close()
 
-    def mass_calc_and_display(self, input_conc, conc_scaler, input_vol, vol_scaler, inputMW, reagent_name):
+    def mass_calc_and_display(self, input_conc, conc_scaler, input_vol, vol_scaler, input_mw, reagent_name):
         conc_scale_factor = CONC_SCALER_DICT[conc_scaler]
         vol_scale_factor = VOL_SCALER_DICT[vol_scaler]
 
         scaled_conc = input_conc * conc_scale_factor
         scaled_vol = input_vol * vol_scale_factor
 
-        calc_mass = scaled_conc * scaled_vol * inputMW
+        calc_mass = scaled_conc * scaled_vol * input_mw
 
         adj_calc_mass = None
 
@@ -332,14 +338,14 @@ class MainWindow():
             self.GUI.m_calc_button.setDisabled(True)
             self.GUI.m_clear_calc_button.setDisabled(False)
 
-    def vol_calc_and_display(self, input_conc, conc_scaler, input_mass, mass_scaler, inputMW, reagent_name):
+    def vol_calc_and_display(self, input_conc, conc_scaler, input_mass, mass_scaler, input_mw, reagent_name):
         mass_scale_factor = MASS_SCALER_DICT[mass_scaler]
         conc_scale_factor = CONC_SCALER_DICT[conc_scaler]
 
         scaled_mass = input_mass * mass_scale_factor
         scaled_conc = input_conc * conc_scale_factor
 
-        calc_vol = (scaled_mass / inputMW) / scaled_conc
+        calc_vol = (scaled_mass / input_mw) / scaled_conc
 
         adj_calc_vol = None
 
@@ -357,14 +363,14 @@ class MainWindow():
             self.GUI.v_calc_button.setDisabled(True)
             self.GUI.v_clear_calc_button.setDisabled(False)
 
-    def conc_calc_and_display(self, input_mass, mass_scaler, input_vol, vol_scaler, inputMW, reagent_name):
+    def conc_calc_and_display(self, input_mass, mass_scaler, input_vol, vol_scaler, input_mw, reagent_name):
         mass_scale_factor = MASS_SCALER_DICT[mass_scaler]
         vol_scale_factor = VOL_SCALER_DICT[vol_scaler]
 
         scaled_mass = input_mass * mass_scale_factor
         scaled_vol = input_vol * vol_scale_factor
 
-        calc_conc = (scaled_mass / inputMW) / scaled_vol
+        calc_conc = (scaled_mass / input_mw) / scaled_vol
 
         adj_calc_conc = None
 
@@ -403,7 +409,6 @@ class MainWindow():
             else:
                 dropdown_index = dropdown_obj.findText(reagent_selected)
             dropdown_obj.setCurrentIndex(dropdown_index)
-
 
             if len(reagent_list) > 0:
                 selected_reagent = self.Database.return_reagent(dropdown_obj.currentText())

@@ -1,6 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from gui_functions.common_functions import create_line
+from gui_functions.CommonFunctions import create_line
 
 
 class MainGUI(QtWidgets.QWidget):

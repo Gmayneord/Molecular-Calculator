@@ -1,13 +1,13 @@
 from guis.AddReagentGUI import AddReagentGUI
-from gui_functions.common_functions import batch_error_reset, error_highlight
+from gui_functions.CommonFunctions import batch_error_reset, error_highlight
 
 
-class AddWindow():
-    def __init__(self, Main_Window):
+class AddWindow:
+    def __init__(self, main_window):
         super().__init__()
         self.GUI = AddReagentGUI()
-        self.Main_Window = Main_Window
-        self.Database = Main_Window.Database
+        self.Main_Window = main_window
+        self.Database = main_window.Database
         self.reset_main_dropbox = True
         self.Main_Window.dialog_busy = True
         self.connect_buttons()
@@ -23,7 +23,11 @@ class AddWindow():
         self.GUI.close()
 
     def add_item_action(self):
-        batch_error_reset([self.GUI.reagent_input, self.GUI.mw_input, self.GUI.product_code_input, self.GUI.supplier_input, self.GUI.h_code_input])
+        batch_error_reset([self.GUI.reagent_input,
+                           self.GUI.mw_input,
+                           self.GUI.product_code_input,
+                           self.GUI.supplier_input,
+                           self.GUI.h_code_input])
 
         if self.GUI.reagent_input.text() != "" and self.GUI.mw_input.text() != "":
             reagent_text = self.GUI.reagent_input.text()

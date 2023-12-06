@@ -3,7 +3,7 @@
 DATA_STORAGE_FILE_LOC = "Reagent_database.json"
 
 # Version number for the reagent, to be updated
-REAGENT_VERSION_NO=1.0
+REAGENT_VERSION_NO = 1.0
 
 # ==========================================
 # Range of units for dropdown menus
