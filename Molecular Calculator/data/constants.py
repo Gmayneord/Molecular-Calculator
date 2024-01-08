@@ -1,9 +1,31 @@
 
 # Storage location of database file:
-DATA_STORAGE_FILE_LOC = "Reagent_database.json"
+DATA_STORAGE_FILE_LOC = "Reagent_Storage.json"
 
-# Version number for the reagent, to be updated
+# Version number for the reagent, to be updated when modifications are made to the reagent type.
 REAGENT_VERSION_NO = 1.0
+
+# ==========================================
+# Parameters for the input for the calculation (e.g. in mass tab, the concentration and volume fields)
+# Minimum value
+REAGENT_FIELD_MIN_VAL = 0
+
+# Maximum value
+REAGENT_FIELD_MAX_VAL = 1000
+
+# Number of decimal places
+REAGENT_FIELD_DECIMALS_NO = 1
+# ==========================================
+# Field parameters for the input of molecular weight when adding / editing a reagent.
+# Minimum value
+MW_FIELD_MIN_VAL = 0
+
+# Maximum value
+MW_FIELD_MAX_VAL = 1000000
+
+# Number of decimal places
+MW_FIELD_DECIMAL_NO = 2
+# ==========================================
 
 # ==========================================
 # Range of units for dropdown menus

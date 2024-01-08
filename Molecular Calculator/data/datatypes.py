@@ -16,25 +16,25 @@ class Reagent:
     version_no: float = REAGENT_VERSION_NO
 
 
-class ReagentDatabase:
-    def create_database_list(self, sort: bool = True) -> list:
+class ReagentStorage:
+    def create_storage_list(self, sort: bool = True) -> list:
         """
         Function to give a list of items in the database.
         :param sort: boolean to determine whether the list should be sorted alphanumerically prior to return.
         :return: list of items in the reagent database
         """
-        output_list = [item.name for item in self.reagent_database]
+        output_list = [item.name for item in self.reagent_storage]
         if sort:
             output_list = sorted(output_list, key=str.lower)
         return output_list
 
-    def save_database(self) -> None:
+    def save_storage(self) -> None:
         """
         Function to save the current database state to the storage file.
         :return: None
         """
         storage_list = []
-        for each_item in self.reagent_database:
+        for each_item in self.reagent_storage:
             dict_item = vars(each_item)
             storage_list.append(dict_item)
 
@@ -42,19 +42,19 @@ class ReagentDatabase:
             dump(storage_list, json_file, indent=4)
         json_file.close()
 
-    def load_database(self) -> None:
+    def load_storage(self) -> None:
         """
         Function to load the current database state from the storage file.
         It will load the items into the self.reagent_database list.
         :return: None
         """
-        self.reagent_database = []
+        self.reagent_storage = []
         with open(DATA_STORAGE_FILE_LOC, "r") as json_file:
             stored_data = load(json_file)
         json_file.close()
 
         for each_item in stored_data:
-            self.reagent_database.append(Reagent(name=each_item["name"],
+            self.reagent_storage.append(Reagent(name=each_item["name"],
                                                  molecular_weight=each_item["molecular_weight"],
                                                  product_code=each_item["product_code"],
                                                  supplier=each_item["supplier"],
@@ -68,8 +68,8 @@ class ReagentDatabase:
         Function to be run when there is no reagent database found (i.e. the initial run). It will
         :return: list
         """
-        self.reagent_database = []
-        self.save_database()
+        self.reagent_storage = []
+        self.save_storage()
 
     def return_reagent(self, reagent_name: str) -> Reagent:
         """
@@ -77,7 +77,7 @@ class ReagentDatabase:
         :param reagent_name: string containing the name of the reagent.
         :return: Reagent dataclass object for the reagent.
         """
-        output_reagent = [x for x in self.reagent_database if x.name == reagent_name][0]
+        output_reagent = [x for x in self.reagent_storage if x.name == reagent_name][0]
         return output_reagent
 
     def add_reagent(self,
@@ -93,13 +93,13 @@ class ReagentDatabase:
         """
         # Convert it to lowercase for easier comparison. Differentiating between upper and lowercase for items will just lead to confusion
         new_reagent_name = name.lower()
-        overlap_list = [x for x in self.reagent_database if x.name.lower() == new_reagent_name]
+        overlap_list = [x for x in self.reagent_storage if x.name.lower() == new_reagent_name]
         if len(overlap_list) > 0:
             return False
         else:
             new_item = Reagent(name, molecular_weight, product_code, supplier, h_codes)
-            self.reagent_database.append(new_item)
-            self.save_database()
+            self.reagent_storage.append(new_item)
+            self.save_storage()
             return True
 
     def delete_reagent(self, reagent_name: str) -> bool:
@@ -108,9 +108,9 @@ class ReagentDatabase:
         :return: bool, showing whether the item has been deleted from the database or not.
         """
         deletion_item_name = reagent_name.lower()
-        deletion_index = [index for (index, item) in enumerate(self.reagent_database) if item.name.lower() == deletion_item_name][0]
-        del self.reagent_database[deletion_index]
-        self.save_database()
+        deletion_index = [index for (index, item) in enumerate(self.reagent_storage) if item.name.lower() == deletion_item_name][0]
+        del self.reagent_storage[deletion_index]
+        self.save_storage()
         return True
 
     def edit_reagent(self,
@@ -126,12 +126,12 @@ class ReagentDatabase:
         :return: bool, indicating whether changes were successful or not.
         """
         old_reagent_name = old_reagent_name.lower()
-        replacement_index = [index for (index, item) in enumerate(self.reagent_database) if item.name.lower() == old_reagent_name][0]
+        replacement_index = [index for (index, item) in enumerate(self.reagent_storage) if item.name.lower() == old_reagent_name][0]
         new_reagent_obj = Reagent(name,
                                   molecular_weight,
                                   product_code,
                                   supplier,
                                   h_codes)
-        self.reagent_database[replacement_index] = new_reagent_obj
-        self.save_database()
+        self.reagent_storage[replacement_index] = new_reagent_obj
+        self.save_storage()
         return True

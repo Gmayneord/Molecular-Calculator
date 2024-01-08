@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, QtCore, QtGui
 
+from data.constants import MW_FIELD_MIN_VAL, MW_FIELD_MAX_VAL, MW_FIELD_DECIMAL_NO
 
 class AddReagentGUI(QtWidgets.QMainWindow):
     def __init__(self):
@@ -34,7 +35,10 @@ class AddReagentGUI(QtWidgets.QMainWindow):
 
         self.mw_input = QtWidgets.QLineEdit()
         self.mw_input.setFixedSize(QtCore.QSize(150, 20))
-        self.mw_input.setValidator(QtGui.QDoubleValidator(0.00, 1000000, 1, notation=QtGui.QDoubleValidator.StandardNotation))
+        self.mw_input.setValidator(QtGui.QDoubleValidator(bottom=MW_FIELD_MIN_VAL,
+                                                          top=MW_FIELD_MAX_VAL,
+                                                          decimals=MW_FIELD_DECIMAL_NO,
+                                                          notation=QtGui.QDoubleValidator.StandardNotation))
         h_layout.addWidget(self.mw_input)
 
         v_layout.addLayout(h_layout)

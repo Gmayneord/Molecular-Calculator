@@ -8,14 +8,14 @@ class DeleteWindow:
         self.GUI = DeleteReagentGUI()
         self.reset_main_dropbox = True
         self.Main_Window = main_window
-        self.Database = main_window.Database
+        self.Storage = main_window.Storage
         self.Main_Window.dialog_busy = True
         self.connect_buttons()
 
     def connect_buttons(self):
         self.GUI.close_button.clicked.connect(self.close_button_action)
         self.GUI.delete_button.clicked.connect(self.delete_button_action)
-        populate_dropdown_box(self.GUI.dropdown_menu, self.Database.create_database_list())
+        populate_dropdown_box(self.GUI.dropdown_menu, self.Storage.create_storage_list())
 
     def close_button_action(self):
         if self.reset_main_dropbox:
@@ -35,13 +35,13 @@ class DeleteWindow:
             self.GUI.delete_button.setEnabled(False)
 
             # Remove it and write the change to the file
-            self.Database.delete_reagent(self.GUI.dropdown_menu.currentText())
+            self.Storage.delete_reagent(self.GUI.dropdown_menu.currentText())
 
             # Update the dropdown boxes for the main GUI.
             self.Main_Window.populate_reagent_dropdowns()
 
             # Update the dropdown box for the delete interface itself.
-            populate_dropdown_box(self.GUI.dropdown_menu, self.Database.create_database_list(), additional_opt=False)
+            populate_dropdown_box(self.GUI.dropdown_menu, self.Storage.create_storage_list(), additional_opt=False)
 
             # Wait a moment to avoid multiple clicks
             QtCore.QTimer.singleShot(1000, lambda: self.GUI.delete_button.setEnabled(True))

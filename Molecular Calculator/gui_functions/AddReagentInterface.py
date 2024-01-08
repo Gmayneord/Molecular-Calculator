@@ -7,7 +7,7 @@ class AddWindow:
         super().__init__()
         self.GUI = AddReagentGUI()
         self.Main_Window = main_window
-        self.Database = main_window.Database
+        self.Storage = main_window.Storage
         self.reset_main_dropbox = True
         self.Main_Window.dialog_busy = True
         self.connect_buttons()
@@ -36,7 +36,7 @@ class AddWindow:
             supplier_text = self.GUI.supplier_input.text()
             h_code_text = self.GUI.h_code_input.text()
 
-            self.Database.add_reagent(name=reagent_text,
+            self.Storage.add_reagent(name=reagent_text,
                                       molecular_weight=float(mw_text),
                                       product_code=product_text,
                                       supplier=supplier_text,

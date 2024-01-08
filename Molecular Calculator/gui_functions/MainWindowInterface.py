@@ -1,7 +1,7 @@
 from os import path
 
 from guis.MainWindowGUI import MainGUI
-from data.datatypes import ReagentDatabase
+from data.datatypes import ReagentStorage
 from data.constants import (DATA_STORAGE_FILE_LOC,
                             CONC_SCALER_DICT, CONC_SCALER_DEFAULT,
                             VOL_SCALER_DICT, VOL_SCALER_DEFAULT,
@@ -19,16 +19,16 @@ class MainWindow:
         # Initially set this as busy for the creation of the dialog
         self.dialog_busy = True
         self.GUI = MainGUI()
-        self.Database = ReagentDatabase()
+        self.Storage = ReagentStorage()
         self.all_dropdown_boxes = [self.GUI.m_reagent_dropdown, self.GUI.c_reagent_dropdown,
                                    self.GUI.v_reagent_dropdown, self.GUI.i_reagent_dropdown]
 
         # Check if the database file exists, if it doesn't (Assume it's the initial run) and make a new one.
         if path.isfile(DATA_STORAGE_FILE_LOC):
-            self.Database.load_database()
+            self.Storage.load_storage()
 
         else:
-            self.Database.initial_run()
+            self.Storage.initial_run()
             self.GUI.m_output.setText('First runtime detected... A new data storage file has been created!')
             self.GUI.v_output.setText('First runtime detected... A new data storage file has been created!')
             self.GUI.c_output.setText('First runtime detected... A new data storage file has been created!')
@@ -110,7 +110,7 @@ class MainWindow:
         # ======================================================================
 
     def populate_reagent_dropdowns(self, default_value: str = "", connect_mw_responses=False):
-        reagent_list = self.Database.create_database_list()
+        reagent_list = self.Storage.create_storage_list()
         # ======================================================================
         # Populate dropdowns for mass tab
         populate_dropdown_box(dropdown_box_object=self.GUI.m_reagent_dropdown,
@@ -185,9 +185,9 @@ class MainWindow:
                 self.edit_window.GUI.show()
 
         if update_mw:
-            if len(self.Database.reagent_database) > 0:
+            if len(self.Storage.reagent_storage) > 0:
                 # Update the molecular weight label with the current selected item
-                reagent_choice = self.Database.return_reagent(current_dropdown_text)
+                reagent_choice = self.Storage.return_reagent(current_dropdown_text)
                 mol_weight = str(reagent_choice.molecular_weight)
                 update_mw_label(mw_label_obj,
                                 mol_weight)
@@ -223,7 +223,7 @@ class MainWindow:
         if conc_textbox.text() != "" and vol_textbox.text() != "" and reagent_selection_box.currentText() != ADD_NEW_ITEM_TEXT:
             concentration = float(conc_textbox.text())
             volume = float(vol_textbox.text())
-            selected_reagent = self.Database.return_reagent(reagent_selection_box.currentText())
+            selected_reagent = self.Storage.return_reagent(reagent_selection_box.currentText())
             self.mass_calc_and_display(input_conc=concentration,
                                        input_vol=volume,
                                        input_mw=selected_reagent.molecular_weight,
@@ -254,7 +254,7 @@ class MainWindow:
         if conc_textbox.text() != "" and mass_textbox.text() != "" and reagent_selection_box.currentText() != ADD_NEW_ITEM_TEXT:
             concentration = float(conc_textbox.text())
             mass = float(mass_textbox.text())
-            selected_reagent = self.Database.return_reagent(reagent_selection_box.currentText())
+            selected_reagent = self.Storage.return_reagent(reagent_selection_box.currentText())
 
             self.vol_calc_and_display(input_conc=concentration,
                                       conc_scaler=conc_scaler.currentText(),
@@ -287,7 +287,7 @@ class MainWindow:
         if vol_textbox.text() != "" and mass_textbox.text() != "" and reagent_selection_box.currentText() != ADD_NEW_ITEM_TEXT:
             vol = float(vol_textbox.text())
             mass = float(mass_textbox.text())
-            selected_reagent = self.Database.return_reagent(reagent_selection_box.currentText())
+            selected_reagent = self.Storage.return_reagent(reagent_selection_box.currentText())
 
             self.conc_calc_and_display(input_mass=mass,
                                        mass_scaler=mass_scaler.currentText(),
@@ -298,10 +298,10 @@ class MainWindow:
 
     def inspect_reagent_button_action(self):
         # If there isn't anything in the database, do nothing for now
-        if len(self.Database.reagent_database) > 0:
+        if len(self.Storage.reagent_storage) > 0:
             # Get the item which is currently selected for inspection
             selected_item = self.GUI.i_reagent_dropdown.currentText()
-            Reagent_obj = self.Database.return_reagent(selected_item)
+            Reagent_obj = self.Storage.return_reagent(selected_item)
             self.inpection_window = InspectionWindow(Reagent_obj)
             self.inpection_window.GUI.show()
 
@@ -399,7 +399,7 @@ class MainWindow:
                          self.GUI.c_mw_label,
                          self.GUI.i_mw_label]
 
-        reagent_list = self.Database.create_database_list()
+        reagent_list = self.Storage.create_storage_list()
         for obj_no in range(len(dropdown_list)):
             dropdown_obj = dropdown_list[obj_no]
             populate_dropdown_box(dropdown_obj, reagent_list, additional_opt=True)
@@ -411,7 +411,7 @@ class MainWindow:
             dropdown_obj.setCurrentIndex(dropdown_index)
 
             if len(reagent_list) > 0:
-                selected_reagent = self.Database.return_reagent(dropdown_obj.currentText())
+                selected_reagent = self.Storage.return_reagent(dropdown_obj.currentText())
                 mol_weight = str(selected_reagent.molecular_weight)
                 update_mw_label(mw_label_list[obj_no],
                                 mol_weight)

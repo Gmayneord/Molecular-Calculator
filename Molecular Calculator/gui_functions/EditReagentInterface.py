@@ -6,7 +6,7 @@ class EditWindow:
     def __init__(self, main_window):
         super().__init__()
         self.GUI = EditReagentGUI()
-        self.Database = main_window.Database
+        self.Storage = main_window.Storage
         self.Main_Window = main_window
         self.reset_main_dropbox = True
         self.Main_Window.dialog_busy = True
@@ -16,7 +16,7 @@ class EditWindow:
         self.GUI.add_item_button.clicked.connect(self.edit_item_action)
         self.GUI.close_button.clicked.connect(self.close_button_action)
         self.GUI.dropdown_menu.activated[str].connect(self.dropdown_selected_action)
-        populate_dropdown_box(self.GUI.dropdown_menu, self.Database.create_database_list())
+        populate_dropdown_box(self.GUI.dropdown_menu, self.Storage.create_storage_list())
         self.dropdown_selected_action()
 
     def close_button_action(self):
@@ -28,7 +28,7 @@ class EditWindow:
     def dropdown_selected_action(self):
         self.GUI.reagent_input.setText(self.GUI.dropdown_menu.currentText())
         if self.GUI.dropdown_menu.currentText() != "":
-            selected_item = self.Database.return_reagent(self.GUI.dropdown_menu.currentText())
+            selected_item = self.Storage.return_reagent(self.GUI.dropdown_menu.currentText())
             self.GUI.reagent_input.setText(str(selected_item.name))
             self.GUI.mw_input.setText(str(selected_item.molecular_weight))
             self.GUI.product_code_input.setText(str(selected_item.product_code))
@@ -51,7 +51,7 @@ class EditWindow:
             supplier_text = self.GUI.supplier_input.text()
             h_code_text = self.GUI.h_code_input.text()
 
-            self.Database.edit_reagent(old_reagent_name=original_reagent_text,
+            self.Storage.edit_reagent(old_reagent_name=original_reagent_text,
                                        name=reagent_text,
                                        molecular_weight=float(mw_text),
                                        product_code=product_text,

@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 from gui_functions.CommonFunctions import create_line
-
+from data.constants import REAGENT_FIELD_MIN_VAL, REAGENT_FIELD_MAX_VAL, REAGENT_FIELD_DECIMALS_NO
 
 class MainGUI(QtWidgets.QWidget):
     def __init__(self):
@@ -118,7 +118,10 @@ class MainGUI(QtWidgets.QWidget):
 
         self.m_conc_textbox = QtWidgets.QLineEdit(v_layout_widget)
         self.m_conc_textbox.setFixedSize(QtCore.QSize(190, 21))
-        self.m_conc_textbox.setValidator(QtGui.QDoubleValidator(0.00, 1000, 1, notation=QtGui.QDoubleValidator.StandardNotation))
+        self.m_conc_textbox.setValidator(QtGui.QDoubleValidator(bottom=REAGENT_FIELD_MIN_VAL,
+                                                                top=REAGENT_FIELD_MAX_VAL,
+                                                                decimals=REAGENT_FIELD_DECIMALS_NO,
+                                                                notation=QtGui.QDoubleValidator.StandardNotation))
         h_layout.addWidget(self.m_conc_textbox)
 
         self.m_conc_dropdown = QtWidgets.QComboBox(v_layout_widget)
@@ -140,7 +143,10 @@ class MainGUI(QtWidgets.QWidget):
 
         self.m_vol_textbox = QtWidgets.QLineEdit(v_layout_widget)
         self.m_vol_textbox.setFixedSize(QtCore.QSize(190, 21))
-        self.m_vol_textbox.setValidator(QtGui.QDoubleValidator(0.00, 1000, 1, notation=QtGui.QDoubleValidator.StandardNotation))
+        self.m_vol_textbox.setValidator(QtGui.QDoubleValidator(bottom=REAGENT_FIELD_MIN_VAL,
+                                                                top=REAGENT_FIELD_MAX_VAL,
+                                                                decimals=REAGENT_FIELD_DECIMALS_NO,
+                                                                notation=QtGui.QDoubleValidator.StandardNotation))
         h_layout.addWidget(self.m_vol_textbox)
 
         self.m_vol_dropdown = QtWidgets.QComboBox(v_layout_widget)
@@ -222,7 +228,10 @@ class MainGUI(QtWidgets.QWidget):
 
         self.v_conc_textbox = QtWidgets.QLineEdit(v_layout_widget)
         self.v_conc_textbox.setFixedSize(QtCore.QSize(190, 21))
-        self.v_conc_textbox.setValidator(QtGui.QDoubleValidator(0.00, 1000, 1, notation=QtGui.QDoubleValidator.StandardNotation))
+        self.v_conc_textbox.setValidator(QtGui.QDoubleValidator(bottom=REAGENT_FIELD_MIN_VAL,
+                                                                top=REAGENT_FIELD_MAX_VAL,
+                                                                decimals=REAGENT_FIELD_DECIMALS_NO,
+                                                                notation=QtGui.QDoubleValidator.StandardNotation))
         h_layout.addWidget(self.v_conc_textbox)
 
         self.v_conc_dropdown = QtWidgets.QComboBox(v_layout_widget)
@@ -244,7 +253,10 @@ class MainGUI(QtWidgets.QWidget):
 
         self.v_mass_textbox = QtWidgets.QLineEdit(v_layout_widget)
         self.v_mass_textbox.setFixedSize(QtCore.QSize(190, 21))
-        self.v_mass_textbox.setValidator(QtGui.QDoubleValidator(0.00, 1000, 1, notation=QtGui.QDoubleValidator.StandardNotation))
+        self.v_mass_textbox.setValidator(QtGui.QDoubleValidator(bottom=REAGENT_FIELD_MIN_VAL,
+                                                                top=REAGENT_FIELD_MAX_VAL,
+                                                                decimals=REAGENT_FIELD_DECIMALS_NO,
+                                                                notation=QtGui.QDoubleValidator.StandardNotation))
         h_layout.addWidget(self.v_mass_textbox)
 
         self.v_mass_dropdown = QtWidgets.QComboBox(v_layout_widget)
@@ -326,7 +338,10 @@ class MainGUI(QtWidgets.QWidget):
 
         self.c_vol_textbox = QtWidgets.QLineEdit(v_layout_widget)
         self.c_vol_textbox.setFixedSize(QtCore.QSize(190, 21))
-        self.c_vol_textbox.setValidator(QtGui.QDoubleValidator(0.00, 1000, 1, notation=QtGui.QDoubleValidator.StandardNotation))
+        self.c_vol_textbox.setValidator(QtGui.QDoubleValidator(bottom=REAGENT_FIELD_MIN_VAL,
+                                                                top=REAGENT_FIELD_MAX_VAL,
+                                                                decimals=REAGENT_FIELD_DECIMALS_NO,
+                                                                notation=QtGui.QDoubleValidator.StandardNotation))
         h_layout.addWidget(self.c_vol_textbox)
 
         self.c_vol_dropdown = QtWidgets.QComboBox(v_layout_widget)
@@ -348,7 +363,10 @@ class MainGUI(QtWidgets.QWidget):
 
         self.c_mass_textbox = QtWidgets.QLineEdit(v_layout_widget)
         self.c_mass_textbox.setFixedSize(QtCore.QSize(190, 21))
-        self.c_mass_textbox.setValidator(QtGui.QDoubleValidator(0.00, 1000, 1, notation=QtGui.QDoubleValidator.StandardNotation))
+        self.c_mass_textbox.setValidator(QtGui.QDoubleValidator(bottom=REAGENT_FIELD_MIN_VAL,
+                                                                top=REAGENT_FIELD_MAX_VAL,
+                                                                decimals=REAGENT_FIELD_DECIMALS_NO,
+                                                                notation=QtGui.QDoubleValidator.StandardNotation))
         h_layout.addWidget(self.c_mass_textbox)
 
         self.c_mass_dropdown = QtWidgets.QComboBox(v_layout_widget)
